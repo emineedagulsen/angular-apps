@@ -1,0 +1,90 @@
+<div class="container"></div> 
+    <div class="row">
+        <div class="col-5 mx-auto">
+            <h3 class="bg-primary text-white p-3 ">
+                {{getName()}} 'nın Listesi
+            </h3> 
+            
+            <div class="input-group mb-3">
+                <input type="text" class="form-control">
+                <button class="btn btn-outline-primary" (click)="addItem()">Add</button>
+            </div>
+
+            <div class="form-check mb-3">
+                <input type="checkbox" [(ngModel)]="displayAll" class="form-check-input"  id="displayAll" >
+                <label for="displayAll" class="form-check-label">Hepsini Göster</label> 
+                <!-- checkbox varsayılan olarak true yani işaretli gelcek çünkü displayAll=true olarak tanımlı componentte -->
+            </div>
+
+            <!-- <table class="table table-bordered" *ngIf="getItems().length>0 "> ! -->
+        
+            <!-- <div class="mt-2" *ngIf="displayCount()>0">
+                {{displayCount()}} görev tamamlandı!
+            </div> -->
+
+            <div class="mt-2" *ngIf="displayCount()==0">
+                Hiç görev tamamlanmadı!
+            </div>
+
+            <div class="alert alert-success" role="alert" *ngIf="getItems().length==0 else itemsTable">
+                Tüm görevler tamamlandı!
+                <!-- Burada ngtemplatte tanımladığım itemsTable ismini kullandım  -->
+            </div>
+
+            <ng-template #itemsTable >
+                <table class="table table-bordered" *ngIf="getItems().length>0 "> 
+                    <thead>
+                       <tr>
+                           <th></th>
+                           <th>Description</th>
+                           <th>Action</th>
+                       </tr>
+                    </thead>   
+                    <tbody> 
+                        <tr *ngFor="let item of getItems()" >
+                            <td [class]="{'bg-success': item.action, 'bg-danger': !item.action}">{{item.id}}</td>
+                           <td [class]="{'bg-success': item.action, 'bg-danger': !item.action}">{{item.description}}</td>
+                           <!-- <td>
+                               <div *ngIf="item.action">Evet</div>
+                               <div *ngIf="!item.action">Hayır</div>
+                           </td> -->
+                           <td>
+                               <!-- <div [ngSwitch]="item.action">
+                                   <div *ngSwitchCase="true">Evet</div>
+                                   <div *ngSwitchDefault>Hayır</div> -->
+                                   <!--ngSwitchDefault koşula uymayan değeri false döndürüyo direk  -->
+                               <!-- </div> -->
+                                <div [class]="{'bg-success': item.action, 'bg-danger': !item.action}" *ngIf="item.action;else noTemplate">
+                                    Evet
+                                </div>
+
+                                <!-- <div *ngIf="item.action;then noTemplate">
+                                    Evet
+                                </div> -->
+                                
+                
+                                <ng-template #noTemplate>
+                                    <div [class]="{'bg-success': item.action, 'bg-danger': !item.action}">
+                                      Hayır
+                                    </div>
+                                </ng-template>
+                                  
+
+
+                           </td>
+                           <td>
+                               <input type="checkbox" [(ngModel)]="item.action" class="form-check-input"  id="" >
+                           </td>
+                       </tr>
+       <!-- Eğer id ile sıralamak istemezsek ngforda ;koyup let i =index;
+       diyip <td>{{i+1}}</td> dersek de olur
+        -->
+                    </tbody>
+                    
+                   </table> 
+            </ng-template>
+            
+
+           
+        </div>
+    </div>
